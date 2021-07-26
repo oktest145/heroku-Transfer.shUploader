@@ -2,7 +2,7 @@ import aiohttp
 import os
 import time
 from telethon import Button, custom, events
-
+import math
 
 
 def get_size(size):
@@ -13,6 +13,8 @@ def get_size(size):
         i += 1
         size /= 1024.0
     return "%.2f %s" % (size, units[i])
+
+
 
 def time_formatter(milliseconds: int) -> str:
     """Inputs time in milliseconds, to get beautified time,
@@ -29,6 +31,7 @@ def time_formatter(milliseconds: int) -> str:
         + ((str(milliseconds) + "ms, ") if milliseconds else "")
     )
     return tmp[:-2]
+
 
 
 async def download_file(url, file_name, message, start_time, bot):
@@ -70,6 +73,9 @@ async def download_coroutine(session, url, file_name, event, start, bot):
                 diff = now - start
                 if round(diff % 10.00) == 0: #downloaded == total_length:
                     percentage = downloaded * 100 / total_length
+                    prog_bar = "[{0}{1}]".format(
+            ''.join(["◾" for i in range(math.floor(percentage / 10))]),
+            ''.join(["◽" for i in range(10 - math.floor(percentage / 10))]))
                     speed = downloaded / diff
                     elapsed_time = round(diff) * 1000
                     time_to_completion = (
@@ -78,12 +84,8 @@ async def download_coroutine(session, url, file_name, event, start, bot):
                     try:
                         if total_length < downloaded:
                             total_length = downloaded
-                        current_message = """Downloading : {}%
-URL: {}
-File Name: {}
-File Size: {}
-Downloaded: {}
-ETA: {}""".format("%.2f" % (percentage), url, file_name.split("/")[-1], humanbytes(total_length), humanbytes(downloaded), time_formatter(estimated_total_time))
+                        current_message = f"""<b>Downloading : {round(percentage,2)}%</b>\n{prog_bar}\n URL: {url}\
+                        \n{humanbytes(downloaded)} of {humanbytes(total_length)}\nSpeed: {humanbytes(speed)}/sec\nETA: {time_formatter(estimated_total_time)}"""
                         if (
                             current_message != display_message
                             and current_message != "empty"
