@@ -15,12 +15,12 @@ async def progress(current, total, event, start):
         elapsed_time = round(diff) * 1000
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
+        prog_bar = "[{0}{1}]".format(
+            ''.join(["◾" for i in range(math.floor(percentage / 10))]),
+            ''.join(["◽" for i in range(10 - math.floor(percentage / 10))]))
         
-        progress_str = f"""**Downloading : {"%.2f" % (percentage)}%
-File Size:** {get_size(total)}
-**Downloaded:** {get_size(current)}
-**ETA: **{time_formatter(estimated_total_time)}"""
-
+        progress_str = f"""**Downloading: {round(percentage,2)}%**\n{prog_bar}\n{get_size(current)} of {get_size(total)}\
+        \nSpeed: {get_size(speed)}/sec\nETA: {time_formatter(estimated_total_time)}"""
         await event.edit(progress_str)
 
 def get_date_in_two_weeks():
