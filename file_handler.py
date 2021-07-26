@@ -2,6 +2,7 @@ import datetime
 import aiohttp
 import os
 import time
+import math
 from download_from_url import get_size, time_formatter
 
 async def progress(current, total, event, start):
@@ -19,7 +20,7 @@ async def progress(current, total, event, start):
             ''.join(["◾" for i in range(math.floor(percentage / 10))]),
             ''.join(["◽" for i in range(10 - math.floor(percentage / 10))]))
         
-        progress_str = f"""**Downloading: {round(percentage,2)}%**\n{prog_bar}\n{get_size(current)} of {get_size(total)}\
+        progress_str = f"""**Downloading: {round(percentage,2)}**\n{prog_bar}\n{get_size(current)} of {get_size(total)}\
         \nSpeed: {get_size(speed)}/sec\nETA: {time_formatter(estimated_total_time)}"""
         await event.edit(progress_str)
 
