@@ -4,6 +4,20 @@ import os
 import time
 from download_from_url import get_size, time_formatter
 
+def humanbytes(size):
+    # https://stackoverflow.com/a/49361727/4723940
+    # 2**10 = 1024
+    if not size:
+        return ""
+    power = 2**10
+    n = 0
+    Dic_powerN = {0: ' ', 1: 'Ki', 2: 'Mi', 3: 'Gi', 4: 'Ti'}
+    while size > power:
+        size /= power
+        n += 1
+    return str(round(size, 2)) + " " + Dic_powerN[n] + 'B'
+
+
 async def progress(current, total, event, start):
     """Generic progress_callback for both
     upload.py and download.py"""
@@ -16,10 +30,12 @@ async def progress(current, total, event, start):
         time_to_completion = round((total - current) / speed) * 1000
         estimated_total_time = elapsed_time + time_to_completion
         
-        progress_str = f"""**Downloading : {"%.2f" % (percentage)}%
-File Size:** {get_size(total)}
-**Downloaded:** {get_size(current)}
-**ETA: **{time_formatter(estimated_total_time)}"""
+#         progress_str = f"""**Downloading : {"%.2f" % (percentage)}%
+# File Size:** {get_size(total)}
+# **Downloaded:** {get_size(current)}
+# **ETA: **{time_formatter(estimated_total_time)}"""
+        
+        progress_str = f"""**Downloading: {percentage}***\nprog_bar\n{get_size(current)}MB of {get_size(total)}MB\nSpeed:{humanbytes(speed)}"""
 
         await event.edit(progress_str)
 
