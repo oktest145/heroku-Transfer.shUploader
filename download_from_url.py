@@ -14,8 +14,6 @@ def get_size(size):
         size /= 1024.0
     return "%.2f %s" % (size, units[i])
 
-
-
 def time_formatter(milliseconds: int) -> str:
     """Inputs time in milliseconds, to get beautified time,
     as string"""
@@ -31,7 +29,6 @@ def time_formatter(milliseconds: int) -> str:
         + ((str(milliseconds) + "ms, ") if milliseconds else "")
     )
     return tmp[:-2]
-
 
 
 async def download_file(url, file_name, message, start_time, bot):
