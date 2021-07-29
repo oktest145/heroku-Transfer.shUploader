@@ -20,10 +20,10 @@ bot = TelegramClient('Uploader bot', api_id, api_hash).start(bot_token=bot_token
 async def start(event):
     """Send a message when the command /start is issued."""
     dict_ = {
-            "Channel":"https://t.me/AsmSafone",
-            "Support":"https://t.me/safothebot",
-            "Dev":"https://t.me/AmiFutami",
-            "Source code":"https://github.com/Achu2234/heroku-Transfer.shUploader"}
+            "📢 Bot Updates":"https://t.me/AsmSafone",
+            "👥 Support":"https://t.me/safothebot",
+            "🤖 Developer":"https://t.me/AmiFutami",
+            "👨🏻‍💻 Source Code":"https://github.com/Achu2234/heroku-Transfer.shUploader"}
     buttons = [[Button.url(k, v)] for k,v in dict_.items()]
 
     await event.respond('Hi!\nMy Name Is Transfer Uploader Bot Sent any file or direct download link to upload and get the transfer.sh download link Bot Made by @AmiFutami', buttons=buttons)
